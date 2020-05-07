@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>learning jquery
+            
+        </title>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'>
+            
+        </script>
+    </head>
+    <body>
+        <span id='code' >code</span>
+    </body>
+    <script>
+        $(document).ready(function(){
+                $('span').mouseenter(function(){
+                  
+                    //$('#code').empty();
+                    $(this).text('<code>');
+                    $(this).css("background-color","blue");
+                 
+                });
+                $('span').mouseleave(function(){
+
+                    $(this).text('code');
+                });
+
+            });
+    </script>
+</html>
