@@ -6,24 +6,78 @@
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'>
             
         </script>
+       <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <span id='code' >code</span>
+       <div  id='time'><span id='min'></span>
+     <span id='sec'>0</span>
+     <span>.</span>
+     <span id='mili' >00</span>
+    </div>
     </body>
     <script>
         $(document).ready(function(){
-                $('span').mouseenter(function(){
+        
+             var mili=00,sec=0,min=0,timeout=10,run=false,start;
+             var timer='stopped',phase=1;
+
+             $(document).keydown(function(event){
+               if(event){
+                  if(timer==='running')
+                  timer='juststopped';
+                  else if(timer==='stopped'&&event.which==32){
+                     start=new Date().getTime();
+                     timer='idle';
+                  }
                   
-                    //$('#code').empty();
-                    $(this).text('<code>');
-                    $(this).css("background-color","blue");
-                 
-                });
-                $('span').mouseleave(function(){
+               //console.log(event.which);
+               }
 
-                    $(this).text('code');
-                });
+             });
 
+             $(document).keyup(function(event){
+
+               if(timer==='juststopped'){
+                  timer='stopped';
+               }
+               else if(timer==='idle'&&event.which==32){
+                  var timedown=new Date().getTime()-start;
+                  if(timedown/1000>=1)
+                  timer='running';
+                  else
+                  timer='stopped';
+
+               }
+               if(timer=='running'){
+                  var mili=00,sec=0,min=0;
+                  var t=setInterval(function(){
+                     $('#mili').text(mili);
+                     $('#sec').text(sec);
+                     if(mili==99)
+                     {sec++;
+                     }
+                     if(mili<=99)
+                     mili++;
+                     if(mili==100)
+                     mili=0;
+                     if(timer=='juststopped')
+                     clearInterval(t);
+                     
+                  },timeout);
+               }
+
+             });
+
+
+
+
+         
+
+                              
+
+
+ 
+           
             });
     </script>
 </html>
