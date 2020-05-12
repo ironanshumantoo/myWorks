@@ -8,6 +8,20 @@ var w=Math.floor(window.innerWidth/20)*20;
 var h=Math.floor(window.innerHeight/20)*20;
 var pixelx=Math.floor(w/200);
 var pixely=Math.floor(h/200);
+//resize window funcion
+window.addEventListener('resize',function(event){
+
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+     w=Math.floor(window.innerWidth/20)*20;
+ h=Math.floor(window.innerHeight/20)*20;
+ pixelx=Math.floor(w/200);
+ pixely=Math.floor(h/200);
+});
+//score
+var score=0;
+var highScore=0;
+
 
 
 //var newbody=[];
@@ -16,8 +30,10 @@ function Snake(body){
     this.direction=1;
     
     this.draw=function(){
-        c.fillStyle='white';
-        for(var i=0;i<this.body.length;i++)
+        c.fillStyle='#FF00E2';
+        c.fillRect(this.body[1].x,this.body[1].y,15,15);
+        c.fillStyle='#1455D9';
+        for(var i=2;i<this.body.length;i++)
         c.fillRect(this.body[i].x,this.body[i].y,15,15);
     }
     this.component=function(cx,cy){
@@ -26,6 +42,7 @@ function Snake(body){
     }
     this.addcomp=function(ax,ay){
         this.body.push(new this.component(ax,ay));
+        score+=1;
     }
     this.death=function(){
         for(var i=1;i<this.body.length;i++)
@@ -35,9 +52,14 @@ function Snake(body){
         }
     }
    this.destroyed=function(){
+        if(score>highScore)
+        highScore=score;
+        score=0;
        var l=this.body.length;
-       for(var i=1;i<l;i++)
+       for(var i=2;i<l;i++)
        this.body.pop();
+       speed=0;
+       startAnimating(10);
    }
    
  
@@ -78,7 +100,7 @@ function Food(fx,fy){
     this.x=fx;
     this.y=fy;
     this.draw=function(){
-        c.fillStyle='red';
+        c.fillStyle='#BF1736';
         c.fillRect(this.x,this.y,15,15);
     }
 }
@@ -87,7 +109,7 @@ var snakeBody=[];
 var snake=new Snake(snakeBody);
 snake.addcomp(60,100);
 snake.addcomp(80,120);
-
+score=0;
 
 var fx=Math.random()*canvas.width;
 var fy=Math.random()*canvas.height;
@@ -108,7 +130,7 @@ function dChange(e){
 
 }
 
-var  fpsInterval, startTime, now, then, elapsed;
+var  fpsInterval, startTime, now, then, elapsed,speed=0,framesps=10;
 
 
 // initialize the timer variables and start the animation
@@ -123,6 +145,8 @@ function startAnimating(fps) {
 function animate(){
     requestAnimationFrame(animate);
     //calculting distance
+   
+
     //console.log(eat.x);
     if(Math.abs( snake.body[0].x-eat.x)<=15&&Math.abs(snake.body[0].y-eat.y)<=15) 
      {
@@ -133,8 +157,12 @@ function animate(){
          console.log(fx);
          console.log(fy);
          eat=new Food(fx,fy);
+         speed+=1;
+         startAnimating(framesps+speed);
          
      }
+            //resize window
+
      //time
 
 
@@ -154,8 +182,15 @@ function animate(){
     
     snake.update();
     eat.draw();
+    //score update
+    c.fillStyle='white';
+    
+    c.fillText('Highest Score : ',canvas.width-200,20);
+    c.fillText(highScore,canvas.width-120,20);
+    c.fillText('Current Score : ',canvas.width-200,40);
+    c.fillText(score,canvas.width-120,40);
     }
   
    
 }
-startAnimating(10);
+startAnimating(framesps);
