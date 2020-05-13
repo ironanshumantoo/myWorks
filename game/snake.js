@@ -2,7 +2,10 @@ var canvas=document.querySelector('canvas');
 canvas.width=window.innerWidth-2;
 canvas.height=window.innerHeight-4;
 var c=canvas.getContext("2d");
-
+//colors
+var snakeheadcolor="#2185C5";
+var snakefillcolor='#7ECEFD';
+var foodcolor='#FF7F66';
 //for alighment of food and snake
 var w=Math.floor(window.innerWidth/20)*20;
 var h=Math.floor(window.innerHeight/20)*20;
@@ -30,9 +33,9 @@ function Snake(body){
     this.direction=1;
     
     this.draw=function(){
-        c.fillStyle='#FF00E2';
+        c.fillStyle=snakeheadcolor;
         c.fillRect(this.body[1].x,this.body[1].y,15,15);
-        c.fillStyle='#1455D9';
+        c.fillStyle=snakefillcolor;
         for(var i=2;i<this.body.length;i++)
         c.fillRect(this.body[i].x,this.body[i].y,15,15);
     }
@@ -100,7 +103,7 @@ function Food(fx,fy){
     this.x=fx;
     this.y=fy;
     this.draw=function(){
-        c.fillStyle='#BF1736';
+        c.fillStyle=foodcolor;
         c.fillRect(this.x,this.y,15,15);
     }
 }
@@ -184,11 +187,11 @@ function animate(){
     eat.draw();
     //score update
     c.fillStyle='white';
-    
+    c.font='20px verdana'
     c.fillText('Highest Score : ',canvas.width-200,20);
-    c.fillText(highScore,canvas.width-120,20);
+    c.fillText(highScore,canvas.width-70,20);
     c.fillText('Current Score : ',canvas.width-200,40);
-    c.fillText(score,canvas.width-120,40);
+    c.fillText(score,canvas.width-70,40);
     }
   
    
